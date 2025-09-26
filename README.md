@@ -36,19 +36,28 @@ Inicia con un Webhook de UltraMSG al momento en que un mensaje es recibido al n�
 - En cuanto el cliente pregunte por información de los vehículos, acudir directamente al sub-workflow. Nunca contestar él.
 - Pedirle sus datos al cliente y agregarlos al CRM (Hubspot).
 
-### IA/LLM: Utilizo "gpt-4o" como el modelo para el agente, modificandole la temperatura a 0.7 para reducir la creatividad en sus respuestas y evitar que invente respuestas, asimismo reduje el Top P a 0.3 para reducir su amplitud de respuesta y apegarse solo al prompt. 
+### IA/LLM
+Utilizo "gpt-4o" como el modelo para el agente, modificandole la temperatura a 0.7 para reducir la creatividad en sus respuestas y evitar que invente respuestas, asimismo reduje el Top P a 0.3 para reducir su amplitud de respuesta y apegarse solo al prompt. 
 
-### Send Msg: Utilicé la acción de "HTTP Request" para que el flujo mande el mensaje directo a la conversación con el cliente, poniendo como METHOD-POST, y como URL el API de mi instancia de UltraMSG. Agregué 2 parametros personalizados, 1 para el numero al cual el flujo debe mandar el mensaje y otro para el body del mensaje de texto. 
+### Send Msg
+Utilicé la acción de "HTTP Request" para que el flujo mande el mensaje directo a la conversación con el cliente, poniendo como METHOD-POST, y como URL el API de mi instancia de UltraMSG. Agregué 2 parametros personalizados, 1 para el numero al cual el flujo debe mandar el mensaje y otro para el body del mensaje de texto. 
 - El Numero al que debe mandar lo puse como un texto JSON el cual extrae el numero del cliente directo del Webhook inicial
 - El body de igual manera lo puse como Expresion JSON, el cual es el output de nuestro agente.
 
-### Calendario: Tiene como acción unicamente "crear evento" directo a la cuenta Google del lote, con valores de "start", "end", attendees y descripcion puestos para ser definidos automaticamente por la IA
+### Calendario
+Tiene como acción unicamente "crear evento" directo a la cuenta Google del lote, con valores de "start", "end", attendees y descripcion puestos para ser definidos automaticamente por la IA
 
-### CRM: Utilizando Hubspot como el sistema para el lote, el tool en el flujo sirve para crear o editar contactos dentro del mismo, haciendo que la IA agregue nombre, correo, numero, preferencias y descripcion del cliente.
+### CRM
+Utilizando Hubspot como el sistema para el lote, el tool en el flujo sirve para crear o editar contactos dentro del mismo, haciendo que la IA agregue nombre, correo, numero, preferencias y descripcion del cliente.
 
 ## Sub-Workflow
 
 <img width="1062" height="557" alt="image" src="https://github.com/user-attachments/assets/dcf20893-af82-4399-97d6-42871f980e8b" />
+
+### Funcionamiento
+El flow inicia al momento en que el parent le solicita, es decir, cada que se pida por información de inventario. La razón de este sub-flujo fue para resolver el problema de que el LLM se invente respuestas, aquí, el prompt del agente es simple; "Tu unica tarea es utilizar el tool de Google Sheets y solo responder con eso, no tiene mas conocimiento ni otra capacidad", utilizo el mismo gpt-4o pero ahora con una temperatura de 0.3 y un top p de 0.3 para reducir aún más su amplitud de respuesta. 
+
+El HTTP request está configurado de la misma manera que el parent. 
 
 
 
