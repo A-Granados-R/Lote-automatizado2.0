@@ -1,0 +1,1 @@
+# Lote-automatizado2.0
